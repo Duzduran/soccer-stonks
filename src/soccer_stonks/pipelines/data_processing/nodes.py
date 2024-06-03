@@ -12,8 +12,10 @@ def drop_duplicates(data: pd.DataFrame) -> pd.DataFrame:
 
 def drop_unnecessary_columns(data: pd.DataFrame) -> pd.DataFrame:
     columns_to_drop = ["ID", "name", "Unnamed: 64", "Team & Contract"]
-    print(f"Dropping columns: {columns_to_drop}")  # Debugging print
-    return data.drop(columns=columns_to_drop)
+    existing_columns_to_drop = [col for col in columns_to_drop if col in data.columns]
+    print(f"Columns in DataFrame: {data.columns.tolist()}")
+    print(f"Attempting to drop columns: {existing_columns_to_drop}")
+    return data.drop(columns=existing_columns_to_drop)
 
 
 

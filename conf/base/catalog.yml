@@ -55,6 +55,8 @@ report:
   type: text.TextDataset
   filepath: data/08_reporting/report.txt
 
+raw_data:
+  type: MemoryDataset
 
 
 # reviews:
