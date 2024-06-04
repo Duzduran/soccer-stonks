@@ -58,6 +58,9 @@ report:
 raw_data:
   type: MemoryDataset
 
+category_mapping:
+  type: pickle.PickleDataset
+  filepath: data/08_reporting/category_mapping.pkl
 
 # reviews:
 #   type: pandas.CSVDataset
