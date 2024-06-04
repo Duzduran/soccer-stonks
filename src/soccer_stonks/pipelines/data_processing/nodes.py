@@ -1,5 +1,5 @@
 import pandas as pd
-
+import pickle
 
 def load_data(data: pd.DataFrame) -> pd.DataFrame:
     print(f"Data loaded: {data.head()}")  # Debugging print
@@ -51,9 +51,15 @@ def encode_and_transform(df: pd.DataFrame) -> pd.DataFrame:
     ValueToInt[0] = ValueToInt[0].str.replace('kg', "").astype("int")
     df['Weight'] = ValueToInt
 
-    # Best Position
-    df["Best position"] = df["Best position"].astype("category")
-    df["Best position"] = df["Best position"].cat.codes
+    fixed_positions = ['CAM', 'ST', 'LWB', 'CB', 'CM', 'RM', 'CDM', 'LM', 'RB', 'RWB', 'LB', 'LW', 'GK', 'CF', 'RW']
+    inverse_mapping = {pos: i for i, pos in enumerate(fixed_positions)}
+
+    # Convert 'Best position' using the fixed mapping
+    df['Best position'] = df['Best position'].map(inverse_mapping).fillna(-1).astype(int)
+
+    # Save the mappings to a file
+    with open('data/08_reporting/category_mapping.pkl', 'wb') as f:
+        pickle.dump(inverse_mapping, f)
 
     return df
 
