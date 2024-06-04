@@ -1,21 +1,20 @@
 import streamlit as st
 import pandas as pd
+import pickle
 from kedro.framework.session import KedroSession
 from kedro.framework.startup import bootstrap_project
 from pathlib import Path
 
-# Initialize the Kedro session
 project_path = Path(__file__).resolve().parent
 bootstrap_project(project_path)
 
-# Create the Kedro session
 with KedroSession.create("", project_path, env="local", extra_params=None) as session:
     context = session.load_context()
 
-    # Load the trained model from Kedro's Data Catalog
+    inverse_mapping = context.catalog.load('category_mapping')
+
     model = context.catalog.load('model')
 
-    # Define the Streamlit app
     st.title("Soccer Player Value Prediction")
 
     st.markdown("""
@@ -23,14 +22,13 @@ with KedroSession.create("", project_path, env="local", extra_params=None) as se
     Please provide the following details to get the prediction.
     """)
 
-    # Define the input fields for the app
     age = st.number_input('Age', min_value=15, max_value=50, value=25, help="Enter the age of the player")
     overall_rating = st.number_input('Overall Rating', min_value=1, max_value=100, value=50, help="Enter the overall rating of the player")
     potential = st.number_input('Potential', min_value=1, max_value=100, value=50, help="Enter the potential rating of the player")
     height = st.number_input('Height (cm)', min_value=100, max_value=250, value=180, help="Enter the height of the player in cm")
     weight = st.number_input('Weight (kg)', min_value=30, max_value=150, value=70, help="Enter the weight of the player in kg")
     foot = st.selectbox('Preferred Foot', options=["Right", "Left"], help="Select the preferred foot of the player")
-    best_position = st.text_input('Best Position', value='Unknown', help="Enter the best position of the player")
+    best_position = st.selectbox('Best Position', options=list(inverse_mapping.keys()), help="Enter the best position of the player")
     growth = st.number_input('Growth', min_value=0, max_value=100, value=50, help="Enter the growth of the player")
     wage = st.number_input('Wage (€)', min_value=0, value=10000, help="Enter the wage of the player in €")
     release_clause = st.number_input('Release Clause (€)', min_value=0, value=5000000, help="Enter the release clause of the player in €")
@@ -67,24 +65,21 @@ with KedroSession.create("", project_path, env="local", extra_params=None) as se
         'Passing / Kicking': [passing_kicking],
     })
 
-    # Perform inference when the button is clicked
+    input_data['Best position'] = input_data['Best position'].map(inverse_mapping).fillna(-1).astype(int)
+
     if st.button('Predict Value'):
         try:
-            # Save the input data to the catalog
+            st.write("Input Data:", input_data)
             context.catalog.save('raw_data', input_data)
 
-            # Run the pipeline
             session.run(pipeline_name='data_processing')
 
-            # Load the preprocessed data
             preprocessed_data = context.catalog.load('preprocessed_players_data')
 
-            # Debugging: Check the columns of the preprocessed data
             st.write("Preprocessed Data Columns:", preprocessed_data.columns.tolist())
             st.write(preprocessed_data.head())
 
-            # Ensure the preprocessed data matches the model's expected features
-            expected_features = model.feature_names_in_  # Adjust this line if needed
+            expected_features = model.feature_names_in_  #
             missing_features = set(expected_features) - set(preprocessed_data.columns)
             if missing_features:
                 st.error(f"Missing features: {missing_features}")
