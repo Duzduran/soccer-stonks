@@ -1,5 +1,5 @@
 import pandas as pd
-
+import pickle
 
 def load_data(data: pd.DataFrame) -> pd.DataFrame:
     print(f"Data loaded: {data.head()}")  # Debugging print
@@ -12,8 +12,10 @@ def drop_duplicates(data: pd.DataFrame) -> pd.DataFrame:
 
 def drop_unnecessary_columns(data: pd.DataFrame) -> pd.DataFrame:
     columns_to_drop = ["ID", "name", "Unnamed: 64", "Team & Contract"]
-    print(f"Dropping columns: {columns_to_drop}")  # Debugging print
-    return data.drop(columns=columns_to_drop)
+    existing_columns_to_drop = [col for col in columns_to_drop if col in data.columns]
+    print(f"Columns in DataFrame: {data.columns.tolist()}")
+    print(f"Attempting to drop columns: {existing_columns_to_drop}")
+    return data.drop(columns=existing_columns_to_drop)
 
 
 
@@ -49,9 +51,15 @@ def encode_and_transform(df: pd.DataFrame) -> pd.DataFrame:
     ValueToInt[0] = ValueToInt[0].str.replace('kg', "").astype("int")
     df['Weight'] = ValueToInt
 
-    # Best Position
-    df["Best position"] = df["Best position"].astype("category")
-    df["Best position"] = df["Best position"].cat.codes
+    fixed_positions = ['CAM', 'ST', 'LWB', 'CB', 'CM', 'RM', 'CDM', 'LM', 'RB', 'RWB', 'LB', 'LW', 'GK', 'CF', 'RW']
+    inverse_mapping = {pos: i for i, pos in enumerate(fixed_positions)}
+
+    # Convert 'Best position' using the fixed mapping
+    df['Best position'] = df['Best position'].map(inverse_mapping).fillna(-1).astype(int)
+
+    # Save the mappings to a file
+    with open('data/08_reporting/category_mapping.pkl', 'wb') as f:
+        pickle.dump(inverse_mapping, f)
 
     return df
 

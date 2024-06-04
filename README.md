@@ -1,5 +1,7 @@
 # soccer-stonks
+or just call it STONKSS
 
+![Alt text](imgs/rondoGuy.png)
 ## Overview
 
 This is your new Kedro project with Kedro-Viz setup, which was generated using `kedro 0.19.6`.
