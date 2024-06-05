@@ -2,6 +2,37 @@
 or just call it RON STONKSS
 
 ![Alt text](imgs/rondoGuy.png)
+
+## Setting up the Virtual Enviroments
+
+ **Create a Virtual Environment:**
+    ```sh
+    python -m venv venv
+    ```
+### Windows
+
+ **Activate the Virtual Environment:**
+    ```sh
+    .\venv\Scripts\activate
+    ```
+
+### macOS
+
+**Activate the Virtual Environment:**
+    ```sh
+    source venv/bin/activate
+    ```
+
+### Installing Dependencies
+
+Once the virtual environment is activated, install the required dependencies:
+```sh
+pip install -r requirements.txt
+```
+
+- To run kedro `kedro run`
+- To run streamlıt `streamlit run streamlit_app.py`
+
 ## Overview
 
 This is your new Kedro project with Kedro-Viz setup, which was generated using `kedro 0.19.6`.
