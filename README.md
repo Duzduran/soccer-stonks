@@ -1,55 +1,37 @@
 # soccer-stonks
-or just call it STONKSS
+or just call it RON STONKSS
 
 ![Alt text](imgs/rondoGuy.png)
-## Overview
 
-This is your new Kedro project with Kedro-Viz setup, which was generated using `kedro 0.19.6`.
+## Setting up the Virtual Enviroments
 
-Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
+ **Create a Virtual Environment:**
+    ```
+    python -m venv venv
+    ```
+### Windows
 
-## Rules and guidelines
+ **Activate the Virtual Environment:**
+    ```
+    .\venv\Scripts\activate
+    ```
 
-In order to get the best out of the template:
+### macOS
 
-* Don't remove any lines from the `.gitignore` file we provide
-* Make sure your results can be reproduced by following a [data engineering convention](https://docs.kedro.org/en/stable/faq/faq.html#what-is-data-engineering-convention)
-* Don't commit data to your repository
-* Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
+**Activate the Virtual Environment:**
+    ```
+    source venv/bin/activate
+    ```
 
-## How to install dependencies
+### Installing Dependencies
 
-Declare any dependencies in `requirements.txt` for `pip` installation.
-
-To install them, run:
-
+Once the virtual environment is activated, install the required dependencies:
 ```
 pip install -r requirements.txt
 ```
 
-## How to run your Kedro pipeline
-
-You can run your Kedro project with:
-
-```
-kedro run
-```
-
-## How to test your Kedro project
-
-Have a look at the files `src/tests/test_run.py` and `src/tests/pipelines/data_science/test_pipeline.py` for instructions on how to write your tests. Run the tests as follows:
-
-```
-pytest
-```
-
-To configure the coverage threshold, look at the `.coveragerc` file.
-
-## Project dependencies
-
-To see and update the dependency requirements for your project use `requirements.txt`. Install the project requirements with `pip install -r requirements.txt`.
-
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
+- To run kedro `kedro run`
+- To run streamlit `streamlit run streamlit_app.py`
 
 ## How to work with Kedro and notebooks
 
@@ -58,26 +40,14 @@ To see and update the dependency requirements for your project use `requirements
 > Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
 
 ### Jupyter
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
-
-```
-pip install jupyter
-```
-
-After installing Jupyter, you can start a local notebook server:
+To use Jupyter notebooks in your Kedro project, you can start a local notebook server:
 
 ```
 kedro jupyter notebook
 ```
 
 ### JupyterLab
-To use JupyterLab, you need to install it:
-
-```
-pip install jupyterlab
-```
-
-You can also start JupyterLab:
+To use JupyterLab:
 
 ```
 kedro jupyter lab
@@ -89,13 +59,3 @@ And if you want to run an IPython session:
 ```
 kedro ipython
 ```
-
-### How to ignore notebook output cells in `git`
-To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
-
-> *Note:* Your output cells will be retained locally.
-
-[Further information about using notebooks for experiments within Kedro projects](https://docs.kedro.org/en/develop/notebooks_and_ipython/kedro_and_notebooks.html).
-## Package your Kedro project
-
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html).
