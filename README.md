@@ -1,5 +1,5 @@
 # soccer-stonks
-or just call it STONKSS
+or just call it RON STONKSS
 
 ![Alt text](imgs/rondoGuy.png)
 ## Overview
